@@ -38,7 +38,7 @@ return array(
     'commandMap' => array(
         'migrate' => array(
             'class' => 'system.cli.commands.MigrateCommand',
-            'migrationPath' => $basePath . DIRECTORY_SEPARATOR . 'migrations',
+            'migrationPath' => 'application.migrations',
         ),
     ),
     'components' => array(

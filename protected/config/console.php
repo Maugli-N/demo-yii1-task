@@ -30,6 +30,12 @@ return array(
         'application.models.*',
         'application.components.*',
     ),
+    'commandMap' => array(
+        'migrate' => array(
+            'class' => 'system.cli.commands.MigrateCommand',
+            'migrationPath' => dirname(__FILE__) . '/../migrations',
+        ),
+    ),
     'components' => array(
         'db' => array(
             'connectionString' => 'mysql:host=' . (isset($env['DB_HOST']) ? $env['DB_HOST'] : 'localhost')

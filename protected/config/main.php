@@ -37,9 +37,9 @@ return array(
     'components' => array(
         'db' => array(
             'connectionString' => 'mysql:host=' . (isset($env['DB_HOST']) ? $env['DB_HOST'] : 'localhost')
-                . ';dbname=' . (isset($env['DB_NAME']) ? $env['DB_NAME'] : 'demo_yii1'),
-            'username' => isset($env['DB_USER']) ? $env['DB_USER'] : 'root',
-            'password' => isset($env['DB_PASSWORD']) ? $env['DB_PASSWORD'] : '',
+                . ';dbname=' . (isset($env['DB_NAME']) ? $env['DB_NAME'] : 'demo_yii1_db'),
+            'username' => isset($env['DB_USER']) ? $env['DB_USER'] : 'demo_yii1_user',
+            'password' => isset($env['DB_PASSWORD']) ? $env['DB_PASSWORD'] : 'demo_yii1_pass',
             'charset' => isset($env['DB_CHARSET']) ? $env['DB_CHARSET'] : 'utf8mb4',
             'emulatePrepare' => true,
         ),

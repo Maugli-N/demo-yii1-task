@@ -1,5 +1,10 @@
 <?php
 
+$basePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+if ($basePath === false) {
+    $basePath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..';
+}
+
 $envFile = dirname(__FILE__) . '/../../.env';
 $env = array();
 if (is_file($envFile)) {
@@ -23,7 +28,7 @@ if (is_file($envFile)) {
 }
 
 return array(
-    'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
+    'basePath' => $basePath,
     'name' => 'Demo Yii1 Console',
     'preload' => array('log'),
     'import' => array(
@@ -33,7 +38,7 @@ return array(
     'commandMap' => array(
         'migrate' => array(
             'class' => 'system.cli.commands.MigrateCommand',
-            'migrationPath' => dirname(__FILE__) . '/../migrations',
+            'migrationPath' => $basePath . DIRECTORY_SEPARATOR . 'migrations',
         ),
     ),
     'components' => array(

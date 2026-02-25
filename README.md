@@ -5,7 +5,6 @@
 ## Структура
 - `web/` — web root (docroot для Apache2), точка входа `web/index.php`.
 - `protected/` — Yii1 приложение (controllers, models, views, components, migrations, config).
-- `.work-docs/` — документация проекта (`.work-docs/WISHLIST.md`, `.work-docs/TECH_SPEC.md`, задание).
 - `uploads/` — загруженные обложки.
 - `framework/` — Yii1 framework (устанавливается скриптом).
 

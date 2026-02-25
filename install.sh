@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRAMEWORK_DIR="$ROOT_DIR/framework"
 RUNTIME_DIR="$ROOT_DIR/protected/runtime"
+YIIC_FILE="$ROOT_DIR/protected/yiic"
 UPLOADS_DIR="$ROOT_DIR/uploads"
 DATA_UPLOADS_DIR="$ROOT_DIR/protected/data/uploads"
 
@@ -59,3 +60,7 @@ chmod 777 "$RUNTIME_DIR" "$UPLOADS_DIR" "$DATA_UPLOADS_DIR"
 echo "Prepared runtime directory: $RUNTIME_DIR (writable for all)"
 echo "Prepared uploads directory: $UPLOADS_DIR (writable for all)"
 echo "Prepared uploads directory: $DATA_UPLOADS_DIR (writable for all)"
+if [ -f "$YIIC_FILE" ]; then
+    chmod 777 "$YIIC_FILE"
+    echo "Prepared yiic file: $YIIC_FILE (executable for all)"
+fi

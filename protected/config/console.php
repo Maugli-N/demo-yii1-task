@@ -13,7 +13,7 @@ return array(
             'connectionString' => 'mysql:host=localhost;dbname=demo_yii1',
             'username' => 'root',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'emulatePrepare' => true,
         ),
         'log' => array(

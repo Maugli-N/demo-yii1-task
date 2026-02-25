@@ -1,0 +1,10 @@
+Options -Indexes
+RewriteEngine On
+
+# Если файл или директория существуют, отдаём их напрямую.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Всё остальное направляем на фронт-контроллер.
+RewriteRule ^ index.php [L]

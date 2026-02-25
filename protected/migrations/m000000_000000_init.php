@@ -10,13 +10,13 @@ class m000000_000000_init extends CDbMigration
             'password_hash' => 'varchar(255) NOT NULL',
             'role' => "varchar(16) NOT NULL DEFAULT 'user'",
             'created_at' => 'datetime NOT NULL',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8');
+        ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
         $this->createIndex('ux_users_username', 'users', 'username', true);
 
         $this->createTable('authors', array(
             'id' => 'pk',
             'name' => 'varchar(255) NOT NULL',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8');
+        ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
 
         $this->createTable('books', array(
             'id' => 'pk',
@@ -26,7 +26,7 @@ class m000000_000000_init extends CDbMigration
             'isbn' => 'varchar(32) NOT NULL',
             'cover_path' => 'varchar(255)',
             'created_at' => 'datetime NOT NULL',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8');
+        ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
         $this->createIndex('ux_books_isbn', 'books', 'isbn', true);
         $this->createIndex('ix_books_year', 'books', 'year');
 
@@ -34,7 +34,7 @@ class m000000_000000_init extends CDbMigration
             'book_id' => 'int NOT NULL',
             'author_id' => 'int NOT NULL',
             'PRIMARY KEY (book_id, author_id)',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8');
+        ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
         $this->addForeignKey('fk_book_author_book', 'book_author', 'book_id', 'books', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_book_author_author', 'book_author', 'author_id', 'authors', 'id', 'CASCADE', 'CASCADE');
 
@@ -43,7 +43,7 @@ class m000000_000000_init extends CDbMigration
             'author_id' => 'int NOT NULL',
             'phone' => 'varchar(32) NOT NULL',
             'created_at' => 'datetime NOT NULL',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8');
+        ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
         $this->createIndex('ux_subscriptions_author_phone', 'subscriptions', 'author_id, phone', true);
         $this->addForeignKey('fk_subscriptions_author', 'subscriptions', 'author_id', 'authors', 'id', 'CASCADE', 'CASCADE');
     }

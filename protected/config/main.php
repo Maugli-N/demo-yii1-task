@@ -1,39 +1,6 @@
 <?php
 
-$envFile = dirname(__FILE__) . '/../../.env';
-$env = array();
-if (is_file($envFile)) {
-    $lines = file(
-        $envFile,
-        FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
-    );
-    foreach ($lines as $line) {
-        $line = trim($line);
-        if ($line === '' || $line[0] === '#') {
-            continue;
-        }
-        if (strpos($line, '=') === false) {
-            continue;
-        }
-        list($key, $value) = explode('=', $line, 2);
-        $key = trim($key);
-        $value = trim($value);
-        if ($value !== '' && ($value[0] === '"' || $value[0] === "'")) {
-            $value = trim($value, "\"'");
-        }
-        $env[$key] = $value;
-    }
-}
-
-$dbHost = isset($env['DB_HOST']) ? $env['DB_HOST'] : 'localhost';
-$dbName = isset($env['DB_NAME']) ? $env['DB_NAME'] : 'demo_yii1_db';
-$dbUser = isset($env['DB_USER']) ? $env['DB_USER'] : 'demo_yii1_user';
-$dbPassword = isset($env['DB_PASSWORD'])
-    ? $env['DB_PASSWORD']
-    : 'demo_yii1_pass';
-$dbCharset = isset($env['DB_CHARSET'])
-    ? $env['DB_CHARSET']
-    : 'utf8mb4';
+$params = require(dirname(__FILE__) . '/params.php');
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
@@ -49,11 +16,11 @@ return array(
     ),
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=' . $dbHost
-                . ';dbname=' . $dbName,
-            'username' => $dbUser,
-            'password' => $dbPassword,
-            'charset' => $dbCharset,
+            'connectionString' => 'mysql:host=' . $params['dbHost']
+                . ';dbname=' . $params['dbName'],
+            'username' => $params['dbUser'],
+            'password' => $params['dbPassword'],
+            'charset' => $params['dbCharset'],
             'emulatePrepare' => true,
         ),
         'user' => array(
@@ -87,5 +54,5 @@ return array(
             ),
         ),
     ),
-    'params' => require(dirname(__FILE__) . '/params.php'),
+    'params' => $params,
 );

@@ -5,7 +5,7 @@
 ## Структура
 - `web/` — web root (docroot для Apache2), точка входа `web/index.php`.
 - `protected/` — Yii1 приложение (controllers, models, views, components, migrations, config).
-- `uploads/` — загруженные обложки.
+- `web/uploads/` — загруженные обложки.
 - `framework/` — Yii1 framework (устанавливается скриптом).
 
 ## Установка Yii1
@@ -15,7 +15,8 @@
 bash install.sh
 ```
 
-По умолчанию будет скачана версия `1.1.32`. Можно указать другую:
+По умолчанию будет скачана версия `1.1.32`.
+При необходимости можно указать другую через переменную `YII_VERSION`:
 
 ```bash
 YII_VERSION=1.1.29 bash install.sh
@@ -28,7 +29,7 @@ YII_VERSION=1.1.29 bash install.sh
 
 ## Миграции
 Миграции находятся в `protected/migrations/`.
-Стартовая миграция: `m000000_000000_init.php`.
+Стартовая миграция: `m260226_010000_init.php`.
 
 ## Запуск
 HTTPD (Apache2) должен быть настроен на docroot `web/`.

@@ -2,20 +2,43 @@
 
 class BookController extends Controller
 {
+    /**
+     * Возвращает список фильтров контроллера.
+     *
+     * @result array - список фильтров
+     */
     public function filters()
     {
         return array('accessControl');
     }
 
+    /**
+     * Возвращает правила доступа для действий.
+     *
+     * @result array - правила доступа
+     */
     public function accessRules()
     {
         return array(
-            array('allow', 'actions' => array('index', 'view'), 'users' => array('*')),
-            array('allow', 'actions' => array('create', 'update', 'delete'), 'users' => array('@')),
+            array(
+                'allow',
+                'actions' => array('index', 'view'),
+                'users' => array('*'),
+            ),
+            array(
+                'allow',
+                'actions' => array('create', 'update', 'delete'),
+                'users' => array('@'),
+            ),
             array('deny', 'users' => array('*')),
         );
     }
 
+    /**
+     * Показывает список книг.
+     *
+     * @result void - выводит страницу списка
+     */
     public function actionIndex()
     {
         $criteria = new CDbCriteria();
@@ -24,12 +47,24 @@ class BookController extends Controller
         $this->render('index', array('books' => $books));
     }
 
+    /**
+     * Показывает карточку книги.
+     *
+     * @param int $id - идентификатор книги
+     *
+     * @result void - выводит страницу книги
+     */
     public function actionView($id)
     {
         $book = $this->loadModel($id);
         $this->render('view', array('book' => $book));
     }
 
+    /**
+     * Создаёт новую книгу.
+     *
+     * @result void - обрабатывает форму создания
+     */
     public function actionCreate()
     {
         $book = new Book();
@@ -37,8 +72,13 @@ class BookController extends Controller
 
         if (isset($_POST['Book'])) {
             $book->attributes = $_POST['Book'];
-            $book->author_ids = isset($_POST['Book']['author_ids']) ? $_POST['Book']['author_ids'] : array();
-            $book->coverFile = CUploadedFile::getInstance($book, 'coverFile');
+            $book->author_ids = isset($_POST['Book']['author_ids'])
+                ? $_POST['Book']['author_ids']
+                : array();
+            $book->coverFile = CUploadedFile::getInstance(
+                $book,
+                'coverFile'
+            );
 
             if ($book->validate()) {
                 $this->handleCoverUpload($book);
@@ -46,7 +86,10 @@ class BookController extends Controller
                 if ($book->save()) {
                     $this->syncAuthors($book, $book->author_ids);
                     $this->notifySubscribers($book);
-                    $this->redirect(array('view', 'id' => $book->id));
+                    $this->redirect(array(
+                        'view',
+                        'id' => $book->id,
+                    ));
                 }
             }
         }
@@ -57,6 +100,13 @@ class BookController extends Controller
         ));
     }
 
+    /**
+     * Обновляет книгу.
+     *
+     * @param int $id - идентификатор книги
+     *
+     * @result void - обрабатывает форму редактирования
+     */
     public function actionUpdate($id)
     {
         $book = $this->loadModel($id);
@@ -65,15 +115,23 @@ class BookController extends Controller
 
         if (isset($_POST['Book'])) {
             $book->attributes = $_POST['Book'];
-            $book->author_ids = isset($_POST['Book']['author_ids']) ? $_POST['Book']['author_ids'] : array();
-            $book->coverFile = CUploadedFile::getInstance($book, 'coverFile');
+            $book->author_ids = isset($_POST['Book']['author_ids'])
+                ? $_POST['Book']['author_ids']
+                : array();
+            $book->coverFile = CUploadedFile::getInstance(
+                $book,
+                'coverFile'
+            );
 
             if ($book->validate()) {
                 $this->handleCoverUpload($book);
 
                 if ($book->save()) {
                     $this->syncAuthors($book, $book->author_ids);
-                    $this->redirect(array('view', 'id' => $book->id));
+                    $this->redirect(array(
+                        'view',
+                        'id' => $book->id,
+                    ));
                 }
             }
         }
@@ -84,6 +142,13 @@ class BookController extends Controller
         ));
     }
 
+    /**
+     * Удаляет книгу.
+     *
+     * @param int $id - идентификатор книги
+     *
+     * @result void - выполняет удаление
+     */
     public function actionDelete($id)
     {
         $book = $this->loadModel($id);
@@ -91,6 +156,13 @@ class BookController extends Controller
         $this->redirect(array('index'));
     }
 
+    /**
+     * Загружает модель книги или выбрасывает ошибку.
+     *
+     * @param int $id - идентификатор книги
+     *
+     * @result Book - модель книги
+     */
     protected function loadModel($id)
     {
         $book = Book::model()->with('authors')->findByPk($id);
@@ -100,9 +172,21 @@ class BookController extends Controller
         return $book;
     }
 
+    /**
+     * Сохраняет связи книги с авторами.
+     *
+     * @param Book $book - модель книги
+     * @param array $authorIds - идентификаторы авторов
+     *
+     * @result void - синхронизирует связи
+     */
     protected function syncAuthors(Book $book, array $authorIds)
     {
-        Yii::app()->db->createCommand()->delete('book_author', 'book_id = :id', array(':id' => $book->id));
+        Yii::app()->db->createCommand()->delete(
+            'book_author',
+            'book_id = :id',
+            array(':id' => $book->id)
+        );
         foreach ($authorIds as $authorId) {
             Yii::app()->db->createCommand()->insert('book_author', array(
                 'book_id' => $book->id,
@@ -111,6 +195,13 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Загружает обложку книги и сохраняет путь.
+     *
+     * @param Book $book - модель книги
+     *
+     * @result void - сохраняет файл обложки
+     */
     protected function handleCoverUpload(Book $book)
     {
         if ($book->coverFile === null) {
@@ -122,13 +213,22 @@ class BookController extends Controller
             mkdir($uploadDir, 0777, true);
         }
 
-        $fileName = uniqid('cover_', true) . '.' . $book->coverFile->getExtensionName();
+        $fileName = uniqid('cover_', true)
+            . '.'
+            . $book->coverFile->getExtensionName();
         $path = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
         if ($book->coverFile->saveAs($path)) {
             $book->cover_path = 'uploads/' . $fileName;
         }
     }
 
+    /**
+     * Отправляет уведомления подписчикам авторов книги.
+     *
+     * @param Book $book - модель книги
+     *
+     * @result void - отправляет SMS-уведомления
+     */
     protected function notifySubscribers(Book $book)
     {
         $authorIds = Yii::app()->db->createCommand()
@@ -144,7 +244,12 @@ class BookController extends Controller
         $phones = Yii::app()->db->createCommand()
             ->selectDistinct('phone')
             ->from('subscriptions')
-            ->where('author_id IN (' . implode(',', array_map('intval', $authorIds)) . ')')
+            ->where(
+                'author_id IN (' . implode(',', array_map(
+                    'intval',
+                    $authorIds
+                )) . ')'
+            )
             ->queryColumn();
 
         if (empty($phones)) {

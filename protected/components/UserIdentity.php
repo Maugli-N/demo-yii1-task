@@ -4,9 +4,16 @@ class UserIdentity extends CUserIdentity
 {
     private $_id;
 
+    /**
+     * Аутентифицирует пользователя по логину и паролю.
+     *
+     * @result bool - результат аутентификации
+     */
     public function authenticate()
     {
-        $user = User::model()->findByAttributes(array('username' => $this->username));
+        $user = User::model()->findByAttributes(array(
+            'username' => $this->username,
+        ));
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
             return false;
@@ -23,6 +30,11 @@ class UserIdentity extends CUserIdentity
         return true;
     }
 
+    /**
+     * Возвращает идентификатор пользователя.
+     *
+     * @result int|null - идентификатор пользователя
+     */
     public function getId()
     {
         return $this->_id;

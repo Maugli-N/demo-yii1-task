@@ -2,19 +2,38 @@
 
 class ReportController extends Controller
 {
+    /**
+     * Возвращает список фильтров контроллера.
+     *
+     * @result array - список фильтров
+     */
     public function filters()
     {
         return array('accessControl');
     }
 
+    /**
+     * Возвращает правила доступа для действий.
+     *
+     * @result array - правила доступа
+     */
     public function accessRules()
     {
         return array(
-            array('allow', 'actions' => array('topAuthors'), 'users' => array('*')),
+            array(
+                'allow',
+                'actions' => array('topAuthors'),
+                'users' => array('*'),
+            ),
             array('deny', 'users' => array('*')),
         );
     }
 
+    /**
+     * Формирует отчёт ТОП-10 авторов за выбранный год.
+     *
+     * @result void - выводит страницу отчёта
+     */
     public function actionTopAuthors()
     {
         $year = Yii::app()->request->getParam('year');

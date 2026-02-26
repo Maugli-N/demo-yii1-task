@@ -2,20 +2,43 @@
 
 class AuthorController extends Controller
 {
+    /**
+     * Возвращает список фильтров контроллера.
+     *
+     * @result array - список фильтров
+     */
     public function filters()
     {
         return array('accessControl');
     }
 
+    /**
+     * Возвращает правила доступа для действий.
+     *
+     * @result array - правила доступа
+     */
     public function accessRules()
     {
         return array(
-            array('allow', 'actions' => array('index', 'view', 'subscribe'), 'users' => array('*')),
-            array('allow', 'actions' => array('create', 'update', 'delete'), 'users' => array('@')),
+            array(
+                'allow',
+                'actions' => array('index', 'view', 'subscribe'),
+                'users' => array('*'),
+            ),
+            array(
+                'allow',
+                'actions' => array('create', 'update', 'delete'),
+                'users' => array('@'),
+            ),
             array('deny', 'users' => array('*')),
         );
     }
 
+    /**
+     * Показывает список авторов.
+     *
+     * @result void - выводит страницу списка
+     */
     public function actionIndex()
     {
         $criteria = new CDbCriteria();
@@ -24,12 +47,24 @@ class AuthorController extends Controller
         $this->render('index', array('authors' => $authors));
     }
 
+    /**
+     * Показывает карточку автора.
+     *
+     * @param int $id - идентификатор автора
+     *
+     * @result void - выводит страницу автора
+     */
     public function actionView($id)
     {
         $author = $this->loadModel($id);
         $this->render('view', array('author' => $author));
     }
 
+    /**
+     * Создаёт нового автора.
+     *
+     * @result void - обрабатывает форму создания
+     */
     public function actionCreate()
     {
         $author = new Author();
@@ -42,6 +77,13 @@ class AuthorController extends Controller
         $this->render('form', array('author' => $author));
     }
 
+    /**
+     * Обновляет данные автора.
+     *
+     * @param int $id - идентификатор автора
+     *
+     * @result void - обрабатывает форму редактирования
+     */
     public function actionUpdate($id)
     {
         $author = $this->loadModel($id);
@@ -54,6 +96,13 @@ class AuthorController extends Controller
         $this->render('form', array('author' => $author));
     }
 
+    /**
+     * Удаляет автора.
+     *
+     * @param int $id - идентификатор автора
+     *
+     * @result void - выполняет удаление
+     */
     public function actionDelete($id)
     {
         $author = $this->loadModel($id);
@@ -61,6 +110,13 @@ class AuthorController extends Controller
         $this->redirect(array('index'));
     }
 
+    /**
+     * Создаёт подписку гостя на автора.
+     *
+     * @param int $id - идентификатор автора
+     *
+     * @result void - обрабатывает форму подписки
+     */
     public function actionSubscribe($id)
     {
         $author = $this->loadModel($id);
@@ -71,7 +127,10 @@ class AuthorController extends Controller
             $subscription->attributes = $_POST['Subscription'];
             $subscription->author_id = $author->id;
             if ($subscription->save()) {
-                Yii::app()->user->setFlash('success', 'Подписка оформлена.');
+                Yii::app()->user->setFlash(
+                    'success',
+                    'Подписка оформлена.'
+                );
                 $this->redirect(array('view', 'id' => $author->id));
             }
         }
@@ -82,6 +141,13 @@ class AuthorController extends Controller
         ));
     }
 
+    /**
+     * Загружает модель автора или выбрасывает ошибку.
+     *
+     * @param int $id - идентификатор автора
+     *
+     * @result Author - модель автора
+     */
     protected function loadModel($id)
     {
         $author = Author::model()->findByPk($id);

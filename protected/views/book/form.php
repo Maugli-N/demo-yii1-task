@@ -1,8 +1,16 @@
-<h1><?php echo $book->isNewRecord ? 'Добавить книгу' : 'Редактировать книгу'; ?></h1>
+<h1>
+    <?php echo $book->isNewRecord
+        ? 'Добавить книгу'
+        : 'Редактировать книгу'; ?>
+</h1>
 
 <?php echo CHtml::errorSummary($book); ?>
 
-<?php echo CHtml::form('', 'post', array('enctype' => 'multipart/form-data')); ?>
+<?php echo CHtml::form(
+    '',
+    'post',
+    array('enctype' => 'multipart/form-data')
+); ?>
     <p>
         <?php echo CHtml::activeLabel($book, 'title'); ?><br>
         <?php echo CHtml::activeTextField($book, 'title'); ?>

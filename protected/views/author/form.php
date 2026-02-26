@@ -1,4 +1,8 @@
-<h1><?php echo $author->isNewRecord ? 'Добавить автора' : 'Редактировать автора'; ?></h1>
+<h1>
+    <?php echo $author->isNewRecord
+        ? 'Добавить автора'
+        : 'Редактировать автора'; ?>
+</h1>
 
 <?php echo CHtml::errorSummary($author); ?>
 

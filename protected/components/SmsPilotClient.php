@@ -4,6 +4,14 @@ class SmsPilotClient
 {
     const API_URL = 'https://smspilot.ru/api.php';
 
+    /**
+     * Отправляет SMS через SmsPilot.
+     *
+     * @param string $phone - телефон получателя
+     * @param string $message - текст сообщения
+     *
+     * @result bool - успех отправки
+     */
     public function send($phone, $message)
     {
         $apiKey = Yii::app()->params['smsPilotApiKey'];
@@ -19,7 +27,8 @@ class SmsPilotClient
         $context = stream_context_create(array(
             'http' => array(
                 'method' => 'POST',
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+                'header' =>
+                    "Content-Type: application/x-www-form-urlencoded\r\n",
                 'content' => $payload,
                 'timeout' => 5,
             ),
@@ -27,11 +36,17 @@ class SmsPilotClient
 
         $response = @file_get_contents(self::API_URL, false, $context);
         if ($response === false) {
-            Yii::log('SmsPilot: ошибка отправки.', CLogger::LEVEL_WARNING);
+            Yii::log(
+                'SmsPilot: ошибка отправки.',
+                CLogger::LEVEL_WARNING
+            );
             return false;
         }
 
-        Yii::log('SmsPilot response: ' . $response, CLogger::LEVEL_INFO);
+        Yii::log(
+            'SmsPilot response: ' . $response,
+            CLogger::LEVEL_INFO
+        );
         return true;
     }
 }

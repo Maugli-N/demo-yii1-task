@@ -3,7 +3,10 @@
 $envFile = dirname(__FILE__) . '/../../.env';
 $env = array();
 if (is_file($envFile)) {
-    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file(
+        $envFile,
+        FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+    );
     foreach ($lines as $line) {
         $line = trim($line);
         if ($line === '' || $line[0] === '#') {
@@ -22,6 +25,16 @@ if (is_file($envFile)) {
     }
 }
 
+$dbHost = isset($env['DB_HOST']) ? $env['DB_HOST'] : 'localhost';
+$dbName = isset($env['DB_NAME']) ? $env['DB_NAME'] : 'demo_yii1_db';
+$dbUser = isset($env['DB_USER']) ? $env['DB_USER'] : 'demo_yii1_user';
+$dbPassword = isset($env['DB_PASSWORD'])
+    ? $env['DB_PASSWORD']
+    : 'demo_yii1_pass';
+$dbCharset = isset($env['DB_CHARSET'])
+    ? $env['DB_CHARSET']
+    : 'utf8mb4';
+
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Demo Yii1 Books Catalog',
@@ -36,11 +49,11 @@ return array(
     ),
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=' . (isset($env['DB_HOST']) ? $env['DB_HOST'] : 'localhost')
-                . ';dbname=' . (isset($env['DB_NAME']) ? $env['DB_NAME'] : 'demo_yii1_db'),
-            'username' => isset($env['DB_USER']) ? $env['DB_USER'] : 'demo_yii1_user',
-            'password' => isset($env['DB_PASSWORD']) ? $env['DB_PASSWORD'] : 'demo_yii1_pass',
-            'charset' => isset($env['DB_CHARSET']) ? $env['DB_CHARSET'] : 'utf8mb4',
+            'connectionString' => 'mysql:host=' . $dbHost
+                . ';dbname=' . $dbName,
+            'username' => $dbUser,
+            'password' => $dbPassword,
+            'charset' => $dbCharset,
             'emulatePrepare' => true,
         ),
         'user' => array(
@@ -56,9 +69,12 @@ return array(
                 'book/<id:\d+>' => 'book/view',
                 'author/<id:\d+>' => 'author/view',
                 'report/top-authors' => 'report/topAuthors',
-                'site/<action:(login|logout)>' => 'site/<action>',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                'site/<action:(login|logout)>' =>
+                    'site/<action>',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' =>
+                    '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' =>
+                    '<controller>/<action>',
             ),
         ),
         'log' => array(

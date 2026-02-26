@@ -22,7 +22,7 @@ class SiteController extends Controller
         return array(
             array(
                 'allow',
-                'actions' => array('login'),
+                'actions' => array('login', 'register'),
                 'users' => array('*'),
             ),
             array(
@@ -51,6 +51,34 @@ class SiteController extends Controller
         }
 
         $this->render('login', array('model' => $model));
+    }
+
+    /**
+     * Отображает форму регистрации и создаёт пользователя.
+     *
+     * @result void - обрабатывает форму регистрации
+     */
+    public function actionRegister()
+    {
+        $model = new User('insert');
+
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
+            $model->password = isset($_POST['User']['password'])
+                ? $_POST['User']['password']
+                : null;
+            $model->role = 'user';
+
+            if ($model->save()) {
+                Yii::app()->user->setFlash(
+                    'success',
+                    'Регистрация завершена. Войдите в систему.'
+                );
+                $this->redirect(array('site/login'));
+            }
+        }
+
+        $this->render('register', array('model' => $model));
     }
 
     /**

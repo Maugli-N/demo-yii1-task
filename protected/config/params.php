@@ -35,5 +35,5 @@ $smsPilotSender = isset($env['SMS_PILOT_SENDER'])
 return array(
     'smsPilotApiKey' => $smsPilotApiKey,
     'smsPilotSender' => $smsPilotSender,
-    'uploadDir' => dirname(__FILE__) . '/../../uploads',
+    'uploadDir' => dirname(__FILE__) . '/../../web/uploads',
 );

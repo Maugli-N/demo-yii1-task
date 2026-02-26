@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRAMEWORK_DIR="$ROOT_DIR/framework"
 RUNTIME_DIR="$ROOT_DIR/protected/runtime"
 YIIC_FILE="$ROOT_DIR/protected/yiic"
-UPLOADS_DIR="$ROOT_DIR/uploads"
+UPLOADS_DIR="$ROOT_DIR/web/uploads"
 DATA_UPLOADS_DIR="$ROOT_DIR/protected/data/uploads"
 
 YII_VERSION="${YII_VERSION:-1.1.32}"

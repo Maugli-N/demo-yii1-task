@@ -421,7 +421,8 @@ class m260226_070000_seed_test_data extends CDbMigration
     protected function getUploadDir()
     {
         $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'uploads';
+            . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'web'
+            . DIRECTORY_SEPARATOR . 'uploads';
 
         if (!is_dir($path)) {
             mkdir($path, 0777, true);

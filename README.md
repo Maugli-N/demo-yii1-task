@@ -33,3 +33,9 @@ YII_VERSION=1.1.29 bash install.sh
 ## Запуск
 HTTPD (Apache2) должен быть настроен на docroot `web/`.
 Требуется `mod_rewrite` и разрешение `.htaccess` (AllowOverride All).
+
+## Тестовый пользователь
+Для входа можно использовать тестовую учетную запись:
+
+- Логин: `demo`
+- Пароль: `user`

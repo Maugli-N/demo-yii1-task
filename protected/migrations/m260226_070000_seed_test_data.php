@@ -12,6 +12,8 @@ class m260226_070000_seed_test_data extends CDbMigration
         $now = date('Y-m-d H:i:s');
         $books = $this->getBooks();
 
+        $this->ensureDemoUser($now);
+
         foreach ($books as $book) {
             $authorId = $this->getOrCreateAuthor($book['author']);
             $coverPath = $this->downloadCover(
@@ -46,6 +48,7 @@ class m260226_070000_seed_test_data extends CDbMigration
 
         $this->deleteBooksByIsbn($isbns);
         $this->deleteAuthorsByName(array_unique($authors));
+        $this->deleteUser('demo');
     }
 
     /**
@@ -176,6 +179,49 @@ class m260226_070000_seed_test_data extends CDbMigration
                 'cover_url' => 'https://imo10.labirint.ru/books/129327/'
                     . 'cover.jpg/242-0',
             ),
+        );
+    }
+
+    /**
+     * Создаёт тестового пользователя, если его нет.
+     *
+     * @param string $createdAt - дата создания
+     *
+     * @result void - добавляет пользователя demo
+     */
+    protected function ensureDemoUser($createdAt)
+    {
+        $row = $this->dbConnection->createCommand()
+            ->select('id')
+            ->from('users')
+            ->where('username = :username', array(':username' => 'demo'))
+            ->queryRow();
+
+        if ($row !== false && isset($row['id'])) {
+            return;
+        }
+
+        $this->insert('users', array(
+            'username' => 'demo',
+            'password_hash' => password_hash('user', PASSWORD_BCRYPT),
+            'role' => 'user',
+            'created_at' => $createdAt,
+        ));
+    }
+
+    /**
+     * Удаляет пользователя по логину.
+     *
+     * @param string $username - логин пользователя
+     *
+     * @result void - удаляет пользователя
+     */
+    protected function deleteUser($username)
+    {
+        $this->dbConnection->createCommand()->delete(
+            'users',
+            'username = :username',
+            array(':username' => $username)
         );
     }
 

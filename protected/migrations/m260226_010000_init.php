@@ -9,7 +9,8 @@ class m260226_010000_init extends CDbMigration
      */
     public function safeUp()
     {
-        $tableOptions = 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4';
+        $tableOptions = 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 '
+            . 'COLLATE=utf8mb4_unicode_ci';
 
         $this->createTable('users', array(
             'id' => 'pk',

@@ -1,6 +1,6 @@
 <?php
 
-class m000000_000000_init extends CDbMigration
+class m260226_010000_init extends CDbMigration
 {
     /**
      * Применяет миграцию.

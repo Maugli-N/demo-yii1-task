@@ -13,14 +13,22 @@
 <?php else: ?>
     <ul>
         <?php foreach ($books as $book): ?>
+            <?php
+            $authorNames = array();
+            foreach ($book->authors as $author) {
+                $authorNames[] = $author->name;
+            }
+            $authorLabel = implode(', ', $authorNames);
+            $bookLabel = $authorLabel . ' - ' . $book->title
+                . ' (' . $book->year . ')';
+            ?>
             <li>
                 <a href="<?php echo $this->createUrl(
                     'book/view',
                     array('id' => $book->id)
                 ); ?>">
-                    <?php echo CHtml::encode($book->title); ?>
+                    <?php echo CHtml::encode($bookLabel); ?>
                 </a>
-                (<?php echo CHtml::encode($book->year); ?>)
             </li>
         <?php endforeach; ?>
     </ul>

@@ -34,6 +34,19 @@ YII_VERSION=1.1.29 bash install.sh
 HTTPD (Apache2) должен быть настроен на docroot `web/`.
 Требуется `mod_rewrite` и разрешение `.htaccess` (AllowOverride All).
 
+## Настройка отправки SMS сообщений
+Параметры SmsPilot читаются из `.env`:
+
+- `SMS_PILOT_API_KEY` — API-ключ сервиса
+- `SMS_PILOT_SENDER` — имя отправителя
+
+Тестовая отправка выполняется консольной командой:
+
+```bash
+php protected/yiic.php testsendsms --phone=+79990001122 \
+  --message="Тестовое сообщение"
+```
+
 ## Тестовый пользователь
 Для входа можно использовать тестовую учетную запись:
 

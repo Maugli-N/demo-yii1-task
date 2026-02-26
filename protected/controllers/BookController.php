@@ -205,6 +205,7 @@ class BookController extends Controller
     protected function handleCoverUpload(Book $book)
     {
         if ($book->coverFile === null) {
+            $this->handleCoverUrl($book);
             return;
         }
 
@@ -220,6 +221,71 @@ class BookController extends Controller
         if ($book->coverFile->saveAs($path)) {
             $book->cover_path = 'uploads/' . $fileName;
         }
+    }
+
+    /**
+     * Загружает обложку по ссылке.
+     *
+     * @param Book $book - модель книги
+     *
+     * @result void - сохраняет файл обложки
+     */
+    protected function handleCoverUrl(Book $book)
+    {
+        if (empty($book->cover_url)) {
+            return;
+        }
+
+        $uploadDir = Yii::app()->params['uploadDir'];
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $extension = $this->getExtensionFromUrl($book->cover_url);
+        $fileName = uniqid('cover_', true) . '.' . $extension;
+        $path = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
+
+        $context = stream_context_create(array(
+            'http' => array(
+                'header' => "User-Agent: Mozilla/5.0\r\n",
+                'timeout' => 10,
+            ),
+            'https' => array(
+                'header' => "User-Agent: Mozilla/5.0\r\n",
+                'timeout' => 10,
+            ),
+        ));
+
+        $data = @file_get_contents($book->cover_url, false, $context);
+        if ($data === false) {
+            return;
+        }
+
+        if (file_put_contents($path, $data) !== false) {
+            $book->cover_path = 'uploads/' . $fileName;
+        }
+    }
+
+    /**
+     * Возвращает расширение файла из URL.
+     *
+     * @param string $url - ссылка на файл
+     *
+     * @result string - расширение файла
+     */
+    protected function getExtensionFromUrl($url)
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        if (!is_string($path) || $path === '') {
+            return 'jpg';
+        }
+
+        $info = pathinfo($path);
+        if (!isset($info['extension']) || $info['extension'] === '') {
+            return 'jpg';
+        }
+
+        return strtolower($info['extension']);
     }
 
     /**

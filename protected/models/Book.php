@@ -4,6 +4,7 @@ class Book extends CActiveRecord
 {
     public $author_ids = array();
     public $coverFile;
+    public $cover_url;
 
     /**
      * Возвращает имя таблицы модели.
@@ -38,6 +39,12 @@ class Book extends CActiveRecord
                 'coverFile',
                 'file',
                 'types' => 'jpg,jpeg,png,gif',
+                'allowEmpty' => true,
+            ),
+            array(
+                'cover_url',
+                'url',
+                'defaultScheme' => 'https',
                 'allowEmpty' => true,
             ),
             array('author_ids', 'safe'),
@@ -88,5 +95,22 @@ class Book extends CActiveRecord
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
+    }
+
+    /**
+     * Возвращает подписи атрибутов.
+     *
+     * @result array - подписи атрибутов
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'title' => 'Название',
+            'year' => 'Год',
+            'isbn' => 'ISBN',
+            'description' => 'Описание',
+            'coverFile' => 'Файл обложки',
+            'cover_url' => 'Ссылка на обложку',
+        );
     }
 }

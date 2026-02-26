@@ -41,6 +41,10 @@
         <?php echo CHtml::activeFileField($book, 'coverFile'); ?>
     </p>
     <p>
+        <?php echo CHtml::activeLabel($book, 'cover_url'); ?><br>
+        <?php echo CHtml::activeTextField($book, 'cover_url'); ?>
+    </p>
+    <p>
         <?php echo CHtml::submitButton('Сохранить'); ?>
     </p>
 <?php echo CHtml::endForm(); ?>

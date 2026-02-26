@@ -15,7 +15,7 @@ class m260226_070000_seed_test_data extends CDbMigration
         $this->ensureDemoUser($now);
 
         foreach ($books as $book) {
-            $authorId = $this->getOrCreateAuthor($book['author']);
+            $authorNames = $this->getBookAuthors($book);
             $coverPath = $this->downloadCover(
                 $book['cover_url'],
                 $book['isbn']
@@ -25,7 +25,10 @@ class m260226_070000_seed_test_data extends CDbMigration
                 $coverPath,
                 $now
             );
-            $this->linkBookAuthor($bookId, $authorId);
+            foreach ($authorNames as $authorName) {
+                $authorId = $this->getOrCreateAuthor($authorName);
+                $this->linkBookAuthor($bookId, $authorId);
+            }
         }
     }
 
@@ -42,7 +45,10 @@ class m260226_070000_seed_test_data extends CDbMigration
 
         foreach ($books as $book) {
             $isbns[] = $book['isbn'];
-            $authors[] = $book['author'];
+            $authors = array_merge(
+                $authors,
+                $this->getBookAuthors($book)
+            );
             $this->deleteCover($book['isbn']);
         }
 
@@ -179,7 +185,71 @@ class m260226_070000_seed_test_data extends CDbMigration
                 'cover_url' => 'https://imo10.labirint.ru/books/129327/'
                     . 'cover.jpg/242-0',
             ),
+            array(
+                'authors' => array(
+                    'Аркадий Стругацкий',
+                    'Борис Стругацкий',
+                ),
+                'title' => 'Обитаемый остров',
+                'year' => 2019,
+                'isbn' => '978-5-17-111907-2',
+                'cover_url' => 'https://imo10.labirint.ru/books/684095/'
+                    . 'cover.jpg/242-0',
+            ),
+            array(
+                'authors' => array(
+                    'Аркадий Стругацкий',
+                    'Борис Стругацкий',
+                ),
+                'title' => 'Жук в муравейнике',
+                'year' => 2020,
+                'isbn' => '978-5-17-120079-4',
+                'cover_url' => 'https://imo10.labirint.ru/books/732652/'
+                    . 'cover.jpg/242-0',
+            ),
+            array(
+                'authors' => array(
+                    'Аркадий Стругацкий',
+                    'Борис Стругацкий',
+                ),
+                'title' => 'Волны гасят ветер',
+                'year' => 2016,
+                'isbn' => '978-5-17-094321-0',
+                'cover_url' => 'https://imo10.labirint.ru/books/523232/'
+                    . 'cover.jpg/242-0',
+            ),
+            array(
+                'authors' => array(
+                    'Аркадий Стругацкий',
+                    'Борис Стругацкий',
+                ),
+                'title' => 'Пикник на обочине',
+                'year' => 2022,
+                'isbn' => '978-5-17-088647-0',
+                'cover_url' => 'https://imo10.labirint.ru/books/484897/'
+                    . 'cover.jpg/242-0',
+            ),
         );
+    }
+
+    /**
+     * Возвращает список авторов книги.
+     *
+     * @param array $book - данные книги
+     *
+     * @result array - список авторов
+     */
+    protected function getBookAuthors(array $book)
+    {
+        if (isset($book['authors']) && is_array($book['authors'])) {
+            return $book['authors'];
+        }
+
+        if (isset($book['author'])) {
+            return array($book['author']);
+        }
+
+        return array();
     }
 
     /**

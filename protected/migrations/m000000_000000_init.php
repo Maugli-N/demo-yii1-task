@@ -35,8 +35,6 @@ class m000000_000000_init extends CDbMigration
             'author_id' => 'int NOT NULL',
             'PRIMARY KEY (book_id, author_id)',
         ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
-        $this->addForeignKey('fk_book_author_book', 'book_author', 'book_id', 'books', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_book_author_author', 'book_author', 'author_id', 'authors', 'id', 'CASCADE', 'CASCADE');
 
         $this->createTable('subscriptions', array(
             'id' => 'pk',
@@ -45,7 +43,6 @@ class m000000_000000_init extends CDbMigration
             'created_at' => 'datetime NOT NULL',
         ), 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4');
         $this->createIndex('ux_subscriptions_author_phone', 'subscriptions', 'author_id, phone', true);
-        $this->addForeignKey('fk_subscriptions_author', 'subscriptions', 'author_id', 'authors', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function safeDown()

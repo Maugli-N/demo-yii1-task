@@ -22,10 +22,6 @@
             <a href="<?php echo $this->createUrl('site/login'); ?>">
                 Вход
             </a>
-            |
-            <a href="<?php echo $this->createUrl('site/register'); ?>">
-                Регистрация
-            </a>
         <?php else: ?>
             |
             <a href="<?php echo $this->createUrl('site/logout'); ?>">

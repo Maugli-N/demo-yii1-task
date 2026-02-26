@@ -24,23 +24,9 @@ class User extends CActiveRecord
         return array(
             array('username, role', 'required'),
             array('username', 'length', 'max' => 64),
-            array('username', 'unique'),
             array('role', 'in', 'range' => array('user')),
             array('password', 'required', 'on' => 'insert'),
             array('password', 'length', 'min' => 6, 'max' => 255),
-        );
-    }
-
-    /**
-     * Возвращает подписи атрибутов.
-     *
-     * @result array - подписи атрибутов
-     */
-    public function attributeLabels()
-    {
-        return array(
-            'username' => 'Логин',
-            'password' => 'Пароль',
         );
     }
 
